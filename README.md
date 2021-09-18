@@ -5,6 +5,8 @@
     - [First steps](#first-steps)
     - [Basic workflow](#basic-workflow)
     - [The actual commands for basic workflow](#the-actual-commands-for-basic-workflow)
+    - [SAM commands:](#sam-commands)
+    - [Important observations:](#important-observations)
     - [Helper links:](#helper-links)
 
 
@@ -38,10 +40,28 @@ Just like any Docker workflow there are 3 steps:
 
 ### The actual commands for basic workflow
 1. `docker build -t hello-world .`
-2. `docker tag hello-world:latest <account>.dkr.ecr.<region>.amazonaws.com/hello-world:latest`
-3. `docker push <account>.dkr.ecr.<region>.amazonaws.com/hello-world:latest`
+2. Optional to start the container locally `docker run -p 9000:8080 hello-world`
+3. Optional to test locally `curl -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{}'`
+4. `docker tag hello-world:latest <account>.dkr.ecr.<region>.amazonaws.com/hello-world:latest`
+5. `docker push <account>.dkr.ecr.<region>.amazonaws.com/hello-world:latest`
+
+### SAM commands: 
+1. First need to build the function `sam build`
+2. Optional call `sam validate` to validate the template  
+3. Local test `sam local invoke` or `sam local start-api`
+4. Finally sent the function to cloud by running: `sam deploy`
+5. To view logs use `sam logs -n HelloWorldFunction --stack-name <stack_app> --tail`
+
+
+### Important observations:
+1. Create a S3 Bucket using ``
+2. and copy the the name to `samconfig.toml` file. 
+3. Make sure to replace the account id and region in `samconfig.toml` file.
+4. Remove `aws cloudformation delete-stack --stack-name <stack_app>`
+5. To run the image build by sam `docker run -p 9000:8080 helloworldfunction:rapid-1.30.0`
 
 ### Helper links:
 1. Guide to configure aws CLI: [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html#cli-configure-quickstart-creds)
 2. Guide to lambda documentation for creating images:[here](https://docs.aws.amazon.com/lambda/latest/dg/images-create.html)
 3. Guide to create images from alternative image: [here](https://docs.aws.amazon.com/lambda/latest/dg/images-create.html#images-create-from-alt)
+4. Guide to install AWS SAM:[here](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
