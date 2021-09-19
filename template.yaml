@@ -3,7 +3,7 @@ Transform: AWS::Serverless-2016-10-31
 Description: >
   app
 
-  Sample SAM Template for app
+  Deployed an express js app using the new HTTP API 
   
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
@@ -17,7 +17,7 @@ Resources:
       PackageType: Image
       Events:
         SimpleApp:
-          Type: Api
+          Type: HttpApi
           Properties:
             Path: /{proxy+}
             Method: any
@@ -32,7 +32,7 @@ Outputs:
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
   SimpleAppApi:
     Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
+    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/"
   HelloWorldFunction:
     Description: "Hello World Lambda Function ARN"
     Value: !GetAtt HelloWorldFunction.Arn

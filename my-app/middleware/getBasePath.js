@@ -2,7 +2,7 @@ const getBasePath = function (req, res, next) {
   if (req.requestContext && req.requestContext.path) {
     req.basePath = "/" + req.requestContext.path.split("/")[1];
   } else {
-    req.basePath = "/";
+    req.basePath = "";
   }
 
   next();
